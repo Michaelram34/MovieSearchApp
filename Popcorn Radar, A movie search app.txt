@@ -1,0 +1,41 @@
+Popcorn Radar🍿📡, A movie search app:
+
+Search by: Movie🎞️, Actors👨‍🎤👩‍🎤, Director🧑‍🎨
+
+Movie Card info: Director🧑‍🎨, Description📜, Date/Year📅
+
+Features: 
+-My List (To-Watch🔭 + Favorites❤️),
+-Upcoming Movies (In-Theaters⏳🍿),
+-Streaming Platform availability💻🎬,  
+-Ratings✏️💯 (Private🔒 + Public🌍), 
+
+Advanced Features: 
+-Movie Scheduler/Movie Night Planner🛋️🍿
+
+
+
+Movie Organization:
+-Filter by Genre🎭 (Action🔥💥🤜, Comedy😂🎭🤣, Horror👻🩸🕷️, Sci-Fi🛸🚀👽, etc.)
+-Sort by:
+	Popularity (Most👑 + Least💤), 
+	Ratings (Highest🌟 + Lowest😬), 
+	Release Date (Newest🆕 + Oldest📼),
+	Box Office Revenue (Highest💵 + Lowest🤦‍♂️) - Grossing
+	User Preference/Personalized Recommendation (Movies You Might Like🎯 + Movie You Might Hate❌)
+
+Extra Ideas:
+-Trending Movies? 📈 vs 📉
+-Oscar Winners + Critically Acclaimed🏆
+-TV Remote Cursor
+-Must Wacth?
+-Movie Series (Sequels, Trilogies, etc)
+-Slept-On Movies? 🛏️
+
+- emojis:😞🚫👎🤮🤩🎟️🗑🪦💀📝
+
+"the movie hub app"
+"the movie companion app"
+"the movie search app"
+"the movie guide app"
+"the movie discover app"
