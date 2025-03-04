@@ -1,7 +1,7 @@
 /* style.css */
 body {
-    font-family: 'Courier New', monospace;
-    background-color: #011936;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
     color: white;
     text-align: center;
     margin: 0;
@@ -12,21 +12,48 @@ body {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    text-align: left;
+    text-align: center;
 }
 
-h1 {
+.hidden {
+    display: none;
+}
+
+h1, h2 {
     font-size: 2em;
     text-align: center;
 }
 
-#search {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    margin-top: 10px;
+.button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+button {
+    background-color: #FFD700;
+    color: black;
     border: none;
+    padding: 15px 30px;
+    margin: 10px;
     border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 200px;
+}
+
+button:hover {
+    background-color: #e6c200;
+}
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 14px;
+    padding: 8px 16px;
 }
 
 .movies-list {

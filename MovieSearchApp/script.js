@@ -3,7 +3,9 @@ const API_KEY = '208efbe611ddf35d1e791a016487f9a4'; // Your TMDB API Key
 const API_URL = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=`;
 const MOVIE_DETAILS_URL = `https://api.themoviedb.org/3/movie/`;
 
-document.getElementById('search').addEventListener('input', async function () {
+let myList = JSON.parse(localStorage.getItem('myList')) || [];
+
+document.getElementById('search')?.addEventListener('input', async function () {
     const query = this.value.trim();
     if (query.length > 2) {
         fetchMovies(query);
@@ -53,11 +55,68 @@ async function displayMovies(movies) {
             <div class="movie-info">
                 <h3>${movie.title}</h3>
                 <span>📅 ${movie.release_date || 'Unknown'}</span>
-                <span>🧑‍🎨 Director: ${director}</span>
+                <span>🎬 Director: ${director}</span>
                 <p>${description}</p>
+                <button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>
             </div>
         `;
         
         moviesList.appendChild(movieCard);
+    }
+}
+
+function addToMyList(id, title, poster) {
+    if (!myList.some(movie => movie.id === id)) {
+        myList.push({ id, title, poster });
+        localStorage.setItem('myList', JSON.stringify(myList));
+        alert(`${title} added to My List!`);
+    } else {
+        alert(`${title} is already in My List!`);
+    }
+}
+
+function displayMyList() {
+    const myListContainer = document.getElementById('my-list');
+    myListContainer.innerHTML = '';
+    
+    if (myList.length === 0) {
+        myListContainer.innerHTML = '<p>Your list is empty.</p>';
+        return;
+    }
+
+    myList.forEach(movie => {
+        const movieItem = document.createElement('div');
+        movieItem.classList.add('movie-card');
+        
+        movieItem.innerHTML = `
+            <img src="https://image.tmdb.org/t/p/w500${movie.poster}" alt="${movie.title}">
+            <div class="movie-info">
+                <h3>${movie.title}</h3>
+                <button onclick="removeFromMyList(${movie.id})">❌ Remove</button>
+            </div>
+        `;
+        
+        myListContainer.appendChild(movieItem);
+    });
+}
+
+function removeFromMyList(id) {
+    myList = myList.filter(movie => movie.id !== id);
+    localStorage.setItem('myList', JSON.stringify(myList));
+    displayMyList();
+}
+
+function navigateTo(page) {
+    document.getElementById('start-page').classList.add('hidden');
+    document.getElementById('search-page').classList.add('hidden');
+    document.getElementById('my-list-page').classList.add('hidden');
+    
+    if (page === 'search') {
+        document.getElementById('search-page').classList.remove('hidden');
+    } else if (page === 'my-list') {
+        document.getElementById('my-list-page').classList.remove('hidden');
+        displayMyList();
+    } else {
+        document.getElementById('start-page').classList.remove('hidden');
     }
 }
