@@ -9,8 +9,13 @@ let ratings = JSON.parse(localStorage.getItem('ratings')) || {};
 
 let myList = JSON.parse(localStorage.getItem('myList')) || [];
 
-function ratingSelect(id, ratingValue) {
-    return `\n                <label>Your Rating:\n                    <select onchange="rateMovie(${id}, this.value)">\n                        <option value="" ${ratingValue===''?'selected':''}>--</option>\n                        <option value="1" ${ratingValue===1?'selected':''}>1</option>\n                        <option value="2" ${ratingValue===2?'selected':''}>2</option>\n                        <option value="3" ${ratingValue===3?'selected':''}>3</option>\n                        <option value="4" ${ratingValue===4?'selected':''}>4</option>\n                        <option value="5" ${ratingValue===5?'selected':''}>5</option>\n                    </select>\n                </label>`;
+function ratingStars(id, ratingValue) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        const filled = i <= ratingValue;
+        stars += `<span class="star ${filled ? 'filled' : ''}" onclick="rateMovie(${id}, ${i})">${filled ? '★' : '☆'}</span>`;
+    }
+    return `<div class="rating" id="rating-${id}">${stars}</div>`;
 }
 
 function createMovieCard(movie, director, description, providerText, ratingValue, buttonsHtml) {
@@ -23,7 +28,7 @@ function createMovieCard(movie, director, description, providerText, ratingValue
             <h3>${movie.title}</h3>
             <span>📅 ${movie.release_date || 'Unknown'}</span>
             ${providerText ? `<span class="providers">${providerText}</span>` : ''}
-            ${ratingSelect(movie.id, ratingValue)}
+            ${ratingStars(movie.id, ratingValue)}
             ${buttonsHtml}
         </div>
     `;
@@ -243,12 +248,30 @@ function toggleFavorite(id) {
 }
 
 function rateMovie(id, rating) {
-    if (rating) {
-        ratings[id] = Number(rating);
-    } else {
+    rating = Number(rating);
+    if (ratings[id] === rating) {
         delete ratings[id];
+    } else {
+        ratings[id] = rating;
     }
     localStorage.setItem('ratings', JSON.stringify(ratings));
+    updateStarDisplay(id);
+}
+
+function updateStarDisplay(id) {
+    const ratingValue = ratings[id] || 0;
+    const container = document.getElementById(`rating-${id}`);
+    if (!container) return;
+    const stars = container.querySelectorAll('.star');
+    stars.forEach((star, index) => {
+        if (index < ratingValue) {
+            star.textContent = '★';
+            star.classList.add('filled');
+        } else {
+            star.textContent = '☆';
+            star.classList.remove('filled');
+        }
+    });
 }
 
 function navigateTo(page) {
