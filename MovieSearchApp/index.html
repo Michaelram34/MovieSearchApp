@@ -12,6 +12,7 @@
         <h1 class="title">Popcorn Radar</h1>
         <div class="button-group">
             <button onclick="navigateTo('search')">🔍 Search Movies</button>
+            <button onclick="navigateTo('upcoming')">🎬 Upcoming Movies</button>
             <button onclick="navigateTo('my-list')">📋 My List</button>
         </div>
     </div>
@@ -26,7 +27,16 @@
     <div id="my-list-page" class="container hidden">
         <button class="back-button" onclick="navigateTo('home')">🏠 Back to Home</button>
         <h2>📋 My List</h2>
-        <div id="my-list" class="movies-list"></div>
+        <h3>To-Watch🔭</h3>
+        <div id="to-watch" class="movies-list"></div>
+        <h3>Favorites❤️</h3>
+        <div id="favorites" class="movies-list"></div>
+    </div>
+
+    <div id="upcoming-page" class="container hidden">
+        <button class="back-button" onclick="navigateTo('home')">🏠 Back to Home</button>
+        <h1>Upcoming Movies</h1>
+        <div id="upcoming-movies" class="movies-list"></div>
     </div>
     
     <script src="script.js"></script>
