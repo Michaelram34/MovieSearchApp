@@ -196,6 +196,23 @@ button:active {
     background-color: #243617;
     color: #fff;
 }
+/* Star Rating Styles */
+.rating {
+    margin: 5px 0;
+    display: inline-block;
+}
+
+.star {
+    cursor: pointer;
+    font-size: 20px;
+    color: #ccc;
+    padding: 0 1px;
+}
+
+.star.filled {
+    color: var(--accent-yellow);
+}
+
 /* Modal styles */
 .modal {
     position: fixed;
@@ -236,4 +253,6 @@ button:active {
     width: 100%;
     height: auto;
     margin-bottom: 10px;
+}
+
 }
