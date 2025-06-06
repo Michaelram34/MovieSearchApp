@@ -8,6 +8,29 @@ let ratings = JSON.parse(localStorage.getItem('ratings')) || {};
 
 let myList = JSON.parse(localStorage.getItem('myList')) || [];
 
+function ratingSelect(id, ratingValue) {
+    return `\n                <label>Your Rating:\n                    <select onchange="rateMovie(${id}, this.value)">\n                        <option value="" ${ratingValue===''?'selected':''}>--</option>\n                        <option value="1" ${ratingValue===1?'selected':''}>1</option>\n                        <option value="2" ${ratingValue===2?'selected':''}>2</option>\n                        <option value="3" ${ratingValue===3?'selected':''}>3</option>\n                        <option value="4" ${ratingValue===4?'selected':''}>4</option>\n                        <option value="5" ${ratingValue===5?'selected':''}>5</option>\n                    </select>\n                </label>`;
+}
+
+function createMovieCard(movie, director, description, providerText, ratingValue, buttonsHtml) {
+    const imgPath = movie.poster_path || movie.poster || '';
+    const card = document.createElement('div');
+    card.classList.add('movie-card');
+    card.innerHTML = `
+        <img src="https://image.tmdb.org/t/p/w500${imgPath}" alt="${movie.title}">
+        <div class="movie-info">
+            <h3>${movie.title}</h3>
+            <span>📅 ${movie.release_date || 'Unknown'}</span>
+            ${director ? `<span>🎬 Director: ${director}</span>` : ''}
+            ${description ? `<p>${description}</p>` : ''}
+            ${providerText ? `<span class="providers">${providerText}</span>` : ''}
+            ${ratingSelect(movie.id, ratingValue)}
+            ${buttonsHtml}
+        </div>
+    `;
+    return card;
+}
+
 document.getElementById('search')?.addEventListener('input', async function () {
     const query = this.value.trim();
     if (query.length > 2) {
@@ -78,30 +101,15 @@ async function displayUpcomingMovies(movies) {
         const ratingValue = ratings[movie.id] || '';
         const providerText = providers.length ? `Available on: ${providers.join(', ')}` : '';
 
-        const movieCard = document.createElement('div');
-        movieCard.classList.add('movie-card');
-        movieCard.innerHTML = `
-            <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
-            <div class="movie-info">
-                <h3>${movie.title}</h3>
-                <span>📅 ${movie.release_date || 'Unknown'}</span>
-                <span>🎬 Director: ${director}</span>
-                <p>${description}</p>
-                <span class="providers">${providerText}</span>
-                <label>Your Rating:
-                    <select onchange="rateMovie(${movie.id}, this.value)">
-                        <option value="" ${ratingValue===''?'selected':''}>--</option>
-                        <option value="1" ${ratingValue===1?'selected':''}>1</option>
-                        <option value="2" ${ratingValue===2?'selected':''}>2</option>
-                        <option value="3" ${ratingValue===3?'selected':''}>3</option>
-                        <option value="4" ${ratingValue===4?'selected':''}>4</option>
-                        <option value="5" ${ratingValue===5?'selected':''}>5</option>
-                    </select>
-                </label>
-                <button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>
-            </div>
-        `;
-        container.appendChild(movieCard);
+        const card = createMovieCard(
+            movie,
+            director,
+            description,
+            providerText,
+            ratingValue,
+            `<button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>`
+        );
+        container.appendChild(card);
     }
 }
 
@@ -123,32 +131,16 @@ async function displayMovies(movies) {
         const ratingValue = ratings[movie.id] || '';
         const providerText = providers.length ? `Available on: ${providers.join(', ')}` : '';
 
-        const movieCard = document.createElement('div');
-        movieCard.classList.add('movie-card');
+        const card = createMovieCard(
+            movie,
+            director,
+            description,
+            providerText,
+            ratingValue,
+            `<button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>`
+        );
 
-        movieCard.innerHTML = `
-            <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
-            <div class="movie-info">
-                <h3>${movie.title}</h3>
-                <span>📅 ${movie.release_date || 'Unknown'}</span>
-                <span>🎬 Director: ${director}</span>
-                <p>${description}</p>
-                <span class="providers">${providerText}</span>
-                <label>Your Rating:
-                    <select onchange="rateMovie(${movie.id}, this.value)">
-                        <option value="" ${ratingValue===''?'selected':''}>--</option>
-                        <option value="1" ${ratingValue===1?'selected':''}>1</option>
-                        <option value="2" ${ratingValue===2?'selected':''}>2</option>
-                        <option value="3" ${ratingValue===3?'selected':''}>3</option>
-                        <option value="4" ${ratingValue===4?'selected':''}>4</option>
-                        <option value="5" ${ratingValue===5?'selected':''}>5</option>
-                    </select>
-                </label>
-                <button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>
-            </div>
-        `;
-        
-        moviesList.appendChild(movieCard);
+        moviesList.appendChild(card);
     }
 }
 
@@ -177,29 +169,21 @@ function displayMyList() {
     myList.forEach(movie => {
         const container = movie.isFavorite ? favoriteContainer : watchContainer;
         const ratingValue = ratings[movie.id] || '';
-        const movieItem = document.createElement('div');
-        movieItem.classList.add('movie-card');
 
-        movieItem.innerHTML = `
-            <img src="https://image.tmdb.org/t/p/w500${movie.poster}" alt="${movie.title}">
-            <div class="movie-info">
-                <h3>${movie.title}</h3>
-                <label>Your Rating:
-                    <select onchange="rateMovie(${movie.id}, this.value)">
-                        <option value="" ${ratingValue===''?'selected':''}>--</option>
-                        <option value="1" ${ratingValue===1?'selected':''}>1</option>
-                        <option value="2" ${ratingValue===2?'selected':''}>2</option>
-                        <option value="3" ${ratingValue===3?'selected':''}>3</option>
-                        <option value="4" ${ratingValue===4?'selected':''}>4</option>
-                        <option value="5" ${ratingValue===5?'selected':''}>5</option>
-                    </select>
-                </label>
-                <button onclick="toggleFavorite(${movie.id})">${movie.isFavorite ? '💔 Unfavorite' : '❤️ Favorite'}</button>
-                <button onclick="removeFromMyList(${movie.id})">❌ Remove</button>
-            </div>
+        const buttons = `
+            <button onclick="toggleFavorite(${movie.id})">${movie.isFavorite ? '💔 Unfavorite' : '❤️ Favorite'}</button>
+            <button onclick="removeFromMyList(${movie.id})">❌ Remove</button>
         `;
+        const card = createMovieCard(
+            movie,
+            'Unknown',
+            '',
+            '',
+            ratingValue,
+            buttons
+        );
 
-        container.appendChild(movieItem);
+        container.appendChild(card);
     });
 }
 
