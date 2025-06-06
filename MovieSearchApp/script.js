@@ -21,8 +21,6 @@ function createMovieCard(movie, director, description, providerText, ratingValue
         <div class="movie-info">
             <h3>${movie.title}</h3>
             <span>📅 ${movie.release_date || 'Unknown'}</span>
-            ${director ? `<span>🎬 Director: ${director}</span>` : ''}
-            ${description ? `<p>${description}</p>` : ''}
             ${providerText ? `<span class="providers">${providerText}</span>` : ''}
             ${ratingSelect(movie.id, ratingValue)}
             ${buttonsHtml}
