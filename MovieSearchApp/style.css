@@ -46,6 +46,31 @@ body {
 h1, h2 {
     font-size: 2em;
     text-align: center;
+    font-family: 'Press Start 2P', cursive;
+    color: var(--accent-yellow);
+}
+
+#my-list-page h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--accent-yellow);
+    font-size: 1.2rem;
+    margin: 20px 0 10px;
+}
+
+#search {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 2px solid var(--accent-yellow);
+    background-color: #243617;
+    color: #fff;
+}
+
+#search::placeholder {
+    color: #ccc;
 }
 
 .button-group {
