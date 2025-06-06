@@ -5,13 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Popcorn Radar</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Popcorn Radar🍿📡, A movie companion app:</h1>
+    <div id="start-page" class="container">
+        <h1 class="title">Popcorn Radar</h1>
+        <div class="button-group">
+            <button onclick="navigateTo('search')">🔍 Search Movies</button>
+            <button onclick="navigateTo('my-list')">📋 My List</button>
+        </div>
+    </div>
+    
+    <div id="search-page" class="container hidden">
+        <button class="back-button" onclick="navigateTo('home')">🏠 Back to Home</button>
+        <h1>Search for a Movie</h1>
         <input type="text" id="search" placeholder="Search for a movie...">
         <div id="movies" class="movies-list"></div>
     </div>
+    
+    <div id="my-list-page" class="container hidden">
+        <button class="back-button" onclick="navigateTo('home')">🏠 Back to Home</button>
+        <h2>📋 My List</h2>
+        <div id="my-list" class="movies-list"></div>
+    </div>
+    
     <script src="script.js"></script>
+    <script>displayMyList();</script>
 </body>
 </html>
