@@ -8,6 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+    <nav class="top-nav">
+        <a href="#" onclick="navigateTo('home'); return false;">Home</a>
+        <a href="#" onclick="navigateTo('search'); return false;">Search</a>
+        <a href="#" onclick="navigateTo('upcoming'); return false;">Upcoming</a>
+        <a href="#" onclick="navigateTo('my-list'); return false;">My List</a>
+    </nav>
+
     <div id="start-page" class="container">
         <h1 class="title">8Bit Reels</h1>
         <div class="button-group">
@@ -20,14 +27,12 @@
     </div>
     
     <div id="search-page" class="container hidden">
-        <button class="back-button" onclick="navigateTo('home')">🏠 Back to Home</button>
         <h1>Search for a Movie</h1>
         <input type="text" id="search" placeholder="Search for a movie...">
         <div id="movies" class="movies-list"></div>
     </div>
     
     <div id="my-list-page" class="container hidden">
-        <button class="back-button" onclick="navigateTo('home')">🏠 Back to Home</button>
         <h2>📋 My List</h2>
         <h3>To-Watch🔭</h3>
         <div id="to-watch" class="movies-list"></div>
@@ -36,11 +41,17 @@
     </div>
 
     <div id="upcoming-page" class="container hidden">
-        <button class="back-button" onclick="navigateTo('home')">🏠 Back to Home</button>
         <h1>Upcoming Movies</h1>
         <div id="upcoming-movies" class="movies-list"></div>
     </div>
-    
+
+    <div id="details-modal" class="modal hidden">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal()">✖</button>
+            <div id="modal-details"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script>displayMyList();</script>
 </body>

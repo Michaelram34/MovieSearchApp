@@ -17,7 +17,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 40px 0;
+    padding: 80px 0 40px; /* extra top padding for fixed nav */
 }
 
 .container {
@@ -34,6 +34,31 @@ body {
 
 .hidden {
     display: none;
+}
+
+/* Persistent top navigation */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(4, 29, 14, 0.9);
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    z-index: 1000;
+}
+
+.top-nav a {
+    color: var(--accent-yellow);
+    font-family: 'Press Start 2P', cursive;
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+.top-nav a:hover {
+    text-decoration: underline;
 }
 
 .title {
@@ -110,15 +135,6 @@ button:active {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
 }
 
-.back-button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 0.875rem;
-    padding: 8px 16px;
-    border-radius: 8px;
-    background: var(--accent);
-}
 
 .movies-list {
     display: grid;
@@ -180,7 +196,7 @@ button:active {
     background-color: #243617;
     color: #fff;
 }
-
+/* Star Rating Styles */
 .rating {
     margin: 5px 0;
     display: inline-block;
@@ -195,4 +211,48 @@ button:active {
 
 .star.filled {
     color: var(--accent-yellow);
+}
+
+/* Modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #132616;
+    color: #eee;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    text-align: left;
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--accent-yellow);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-content img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
 }
