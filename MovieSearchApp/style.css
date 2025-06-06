@@ -1,8 +1,9 @@
 /* style.css */
 :root {
-    --bg-start: #0e0e10;
-    --bg-end: #18181b;
-    --accent: #9146FF;
+    --bg-start: #041d0e;
+    --bg-end: #0a3319;
+    --accent: #d32f2f;
+    --accent-yellow: #f0c800;
 }
 
 body {
@@ -24,10 +25,10 @@ body {
     margin: 20px auto;
     padding: 30px;
     text-align: center;
-    background: rgba(31, 31, 35, 0.7);
+    background: rgba(4, 29, 14, 0.8);
     backdrop-filter: blur(8px);
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .hidden {
@@ -35,9 +36,9 @@ body {
 }
 
 .title {
-    font-family: 'Caveat', cursive;
-    color: var(--accent);
-    font-size: 3rem;
+    font-family: 'Press Start 2P', cursive;
+    color: var(--accent-yellow);
+    font-size: 2.5rem;
     margin-bottom: 20px;
 }
 
@@ -55,7 +56,7 @@ h1, h2 {
 }
 
 button {
-    background: linear-gradient(45deg, #772ce8, var(--accent));
+    background: linear-gradient(45deg, var(--accent-yellow), var(--accent));
     color: #fff;
     border: none;
     padding: 15px 30px;
@@ -69,7 +70,7 @@ button {
 
 button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(145, 70, 255, 0.5);
+    box-shadow: 0 4px 10px rgba(240, 200, 0, 0.5);
 }
 
 .back-button {
@@ -79,6 +80,7 @@ button:hover {
     font-size: 14px;
     padding: 8px 16px;
     border-radius: 30px;
+    background: var(--accent);
 }
 
 .movies-list {
@@ -91,7 +93,7 @@ button:hover {
 .movie-card {
     display: flex;
     flex-direction: column;
-    background-color: #1f1f23;
+    background-color: #132616;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
@@ -118,18 +120,18 @@ button:hover {
 
 .movie-info span {
     font-size: 14px;
-    color: var(--accent);
+    color: var(--accent-yellow);
 }
 
 .movie-info p {
     font-size: 13px;
     margin: 5px 0 0;
-    color: #bbb;
+    color: #ddd;
 }
 
 .providers {
     font-size: 12px;
-    color: #66bb6a;
+    color: var(--accent-yellow);
     margin-bottom: 5px;
 }
 
@@ -137,7 +139,7 @@ button:hover {
     margin: 5px 0;
     padding: 4px;
     border-radius: 4px;
-    border: 1px solid var(--accent);
-    background-color: #2e2e35;
+    border: 1px solid var(--accent-yellow);
+    background-color: #243617;
     color: #fff;
 }
