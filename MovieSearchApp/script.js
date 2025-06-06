@@ -116,7 +116,7 @@ async function displayUpcomingMovies(movies) {
             description,
             providerText,
             ratingValue,
-            `<button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>`
+            `<button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>\n            <button onclick="showDetails(${movie.id})">ℹ️ More Info</button>`
         );
         container.appendChild(card);
     }
@@ -147,7 +147,7 @@ async function displayTrendingMovies(movies) {
             description,
             providerText,
             ratingValue,
-            `<button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>`
+            `<button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>\n            <button onclick="showDetails(${movie.id})">ℹ️ More Info</button>`
         );
         container.appendChild(card);
     }
@@ -177,7 +177,7 @@ async function displayMovies(movies) {
             description,
             providerText,
             ratingValue,
-            `<button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>`
+            `<button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>\n            <button onclick="showDetails(${movie.id})">ℹ️ More Info</button>`
         );
 
         moviesList.appendChild(card);
@@ -213,6 +213,7 @@ function displayMyList() {
         const buttons = `
             <button onclick="toggleFavorite(${movie.id})">${movie.isFavorite ? '💔 Unfavorite' : '❤️ Favorite'}</button>
             <button onclick="removeFromMyList(${movie.id})">❌ Remove</button>
+            <button onclick="showDetails(${movie.id})">ℹ️ More Info</button>
         `;
         const card = createMovieCard(
             movie,
@@ -249,6 +250,35 @@ function rateMovie(id, rating) {
         delete ratings[id];
     }
     localStorage.setItem('ratings', JSON.stringify(ratings));
+}
+
+async function showDetails(movieId) {
+    const modal = document.getElementById('details-modal');
+    const modalDetails = document.getElementById('modal-details');
+    modalDetails.innerHTML = '<p>Loading...</p>';
+    modal.classList.remove('hidden');
+
+    const movieDetails = await fetchMovieDetails(movieId);
+    if (!movieDetails) {
+        modalDetails.innerHTML = '<p>Error loading details.</p>';
+        return;
+    }
+
+    const providers = await fetchWatchProviders(movieId);
+    const director = movieDetails.credits?.crew?.find(p => p.job === 'Director')?.name || 'Unknown';
+
+    modalDetails.innerHTML = `
+        <h2>${movieDetails.title}</h2>
+        <img src="https://image.tmdb.org/t/p/w500${movieDetails.poster_path}" alt="${movieDetails.title}">
+        <p><strong>Release Date:</strong> ${movieDetails.release_date || 'Unknown'}</p>
+        <p><strong>Director:</strong> ${director}</p>
+        <p>${movieDetails.overview || 'No description available.'}</p>
+        ${providers.length ? `<p><strong>Available on:</strong> ${providers.join(', ')}</p>` : ''}
+    `;
+}
+
+function closeModal() {
+    document.getElementById('details-modal').classList.add('hidden');
 }
 
 function navigateTo(page) {

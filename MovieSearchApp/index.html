@@ -40,7 +40,14 @@
         <h1>Upcoming Movies</h1>
         <div id="upcoming-movies" class="movies-list"></div>
     </div>
-    
+
+    <div id="details-modal" class="modal hidden">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal()">✖</button>
+            <div id="modal-details"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script>displayMyList();</script>
 </body>
