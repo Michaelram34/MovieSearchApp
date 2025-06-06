@@ -280,6 +280,7 @@ async function showDetails(movieId) {
     const modalDetails = document.getElementById('modal-details');
     modalDetails.innerHTML = '<p>Loading...</p>';
     modal.classList.remove('hidden');
+    document.body.classList.add('modal-open');
 
     const movieDetails = await fetchMovieDetails(movieId);
     if (!movieDetails) {
@@ -289,19 +290,37 @@ async function showDetails(movieId) {
 
     const providers = await fetchWatchProviders(movieId);
     const director = movieDetails.credits?.crew?.find(p => p.job === 'Director')?.name || 'Unknown';
+    const cast = movieDetails.credits?.cast?.slice(0, 5).map(c => c.name).join(', ') || 'Unknown';
+    const ratingValue = ratings[movieId] || 0;
+    const inList = myList.some(m => m.id === movieId);
+    const movie = myList.find(m => m.id === movieId);
+    const isFav = movie?.isFavorite;
+
+    const listButton = inList
+        ? `<button onclick="removeFromMyList(${movieId}); showDetails(${movieId})">❌ Remove from My List</button>`
+        : `<button onclick="addToMyList(${movieId}, '${movieDetails.title}', '${movieDetails.poster_path}'); showDetails(${movieId})">➕ Add to My List</button>`;
+
+    const favButton = inList
+        ? `<button onclick="toggleFavorite(${movieId}); showDetails(${movieId})">${isFav ? '💔 Unfavorite' : '❤️ Favorite'}</button>`
+        : '';
 
     modalDetails.innerHTML = `
         <h2>${movieDetails.title}</h2>
         <img src="https://image.tmdb.org/t/p/w500${movieDetails.poster_path}" alt="${movieDetails.title}">
         <p><strong>Release Date:</strong> ${movieDetails.release_date || 'Unknown'}</p>
+        <p><strong>Runtime:</strong> ${movieDetails.runtime ? movieDetails.runtime + ' min' : 'Unknown'}</p>
         <p><strong>Director:</strong> ${director}</p>
+        <p><strong>Cast:</strong> ${cast}</p>
         <p>${movieDetails.overview || 'No description available.'}</p>
         ${providers.length ? `<p><strong>Available on:</strong> ${providers.join(', ')}</p>` : ''}
+        <div class="modal-buttons">${listButton} ${favButton}</div>
+        ${ratingStars(movieId, ratingValue)}
     `;
 }
 
 function closeModal() {
     document.getElementById('details-modal').classList.add('hidden');
+    document.body.classList.remove('modal-open');
 }
 
 function navigateTo(page) {
@@ -326,3 +345,16 @@ function navigateTo(page) {
 
 // Initial load
 fetchTrendingMovies();
+
+// Modal interactions
+document.getElementById('details-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'details-modal') {
+        closeModal();
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
