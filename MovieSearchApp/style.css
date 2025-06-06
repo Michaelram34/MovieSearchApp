@@ -8,7 +8,8 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
+    background: linear-gradient(180deg, var(--bg-start), var(--bg-end)), url('../hollywood-drawing.png') no-repeat center center fixed;
+    background-size: cover;
     color: #eee;
     text-align: center;
     margin: 0;

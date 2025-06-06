@@ -3,6 +3,7 @@ const API_KEY = '208efbe611ddf35d1e791a016487f9a4'; // Your TMDB API Key
 const API_URL = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=`;
 const MOVIE_DETAILS_URL = `https://api.themoviedb.org/3/movie/`;
 const UPCOMING_URL = `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}`;
+const TRENDING_URL = `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}`;
 
 let ratings = JSON.parse(localStorage.getItem('ratings')) || {};
 
@@ -81,12 +82,53 @@ async function fetchUpcomingMovies() {
     }
 }
 
+async function fetchTrendingMovies() {
+    try {
+        const response = await fetch(TRENDING_URL);
+        const data = await response.json();
+        displayTrendingMovies(data.results.slice(0, 6));
+    } catch (error) {
+        console.error('Error fetching trending movies:', error);
+    }
+}
+
 async function displayUpcomingMovies(movies) {
     const container = document.getElementById('upcoming-movies');
     container.innerHTML = '';
 
     if (!movies || movies.length === 0) {
         container.innerHTML = '<p>No upcoming movies.</p>';
+        return;
+    }
+
+    for (const movie of movies) {
+        const movieDetails = await fetchMovieDetails(movie.id);
+        const providers = await fetchWatchProviders(movie.id);
+
+        const director = movieDetails?.credits?.crew?.find(person => person.job === 'Director')?.name || 'Unknown';
+        const description = movieDetails?.overview || 'No description available.';
+        const ratingValue = ratings[movie.id] || '';
+        const providerText = providers.length ? `Available on: ${providers.join(', ')}` : '';
+
+        const card = createMovieCard(
+            movie,
+            director,
+            description,
+            providerText,
+            ratingValue,
+            `<button onclick="addToMyList(${movie.id}, '${movie.title}', '${movie.poster_path}')">➕ Add to My List</button>`
+        );
+        container.appendChild(card);
+    }
+}
+
+async function displayTrendingMovies(movies) {
+    const container = document.getElementById('trending-movies');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (!movies || movies.length === 0) {
+        container.innerHTML = '<p>No trending movies right now.</p>';
         return;
     }
 
@@ -225,5 +267,9 @@ function navigateTo(page) {
         fetchUpcomingMovies();
     } else {
         document.getElementById('start-page').classList.remove('hidden');
+        fetchTrendingMovies();
     }
 }
+
+// Initial load
+fetchTrendingMovies();
